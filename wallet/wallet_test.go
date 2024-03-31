@@ -77,7 +77,7 @@ func TestWallet(t *testing.T) {
 		}
 
 		//Check if the response is the same as the expected
-		if len(got) == len(expected) {
+		if len(got) != len(expected) {
 			t.Errorf("expected list of wallets 2, got empty")
 		}
 
