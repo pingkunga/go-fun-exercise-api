@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/KKGo-Software-engineering/fun-exercise-api/wallet"
@@ -16,8 +17,16 @@ type Wallet struct {
 	CreatedAt  time.Time `postgres:"created_at"`
 }
 
-func (p *Postgres) Wallets() ([]wallet.Wallet, error) {
-	rows, err := p.Db.Query("SELECT * FROM user_wallet")
+func (p *Postgres) Wallets(walletType string) ([]wallet.Wallet, error) {
+
+	var rows *sql.Rows
+	var err error
+	if walletType != "" {
+		rows, err = p.Db.Query("SELECT * FROM user_wallet WHERE wallet_type = $1", walletType)
+	} else {
+		rows, err = p.Db.Query("SELECT * FROM user_wallet")
+	}
+
 	if err != nil {
 		return nil, err
 	}

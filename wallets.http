@@ -5,5 +5,9 @@
 GET {{HostAddress}}/wallets
 
 
+### Get Wallet Query Param (wallet_type)
+GET {{HostAddress}}/wallets?wallet_type=Savings
+
+
 ### Get Wallets by User ID
 GET {{HostAddress}}/users/1/wallets

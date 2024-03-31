@@ -12,7 +12,7 @@ type Handler struct {
 
 // for implement interface in wqllet.go
 type Storer interface {
-	Wallets() ([]Wallet, error)
+	Wallets(walletType string) ([]Wallet, error)
 	WalletByUserId(userId string) ([]Wallet, error)
 }
 
@@ -26,16 +26,18 @@ type Err struct {
 
 // WalletHandler
 //
-//	@Summary		Get all wallets
-//	@Description	Get all wallets
-//	@Tags			wallet
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	Wallet
-//	@Router			/api/v1/wallets [get]
-//	@Failure		500	{object}	Err
+//		@Summary		Get all wallets
+//		@Description	Get all wallets
+//		@Tags			wallet
+//	 @Param			wallet_type	query	string	false	"wallet type" Enums(Savings, Credit Card, Crypto Wallet)
+//		@Accept			json
+//		@Produce		json
+//		@Success		200	{object}	Wallet
+//		@Router			/api/v1/wallets [get]
+//		@Failure		500	{object}	Err
 func (h *Handler) WalletHandler(c echo.Context) error {
-	wallets, err := h.store.Wallets()
+	walletType := c.QueryParam("wallet_type")
+	wallets, err := h.store.Wallets(walletType)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
 	}
