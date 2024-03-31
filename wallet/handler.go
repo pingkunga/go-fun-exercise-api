@@ -14,6 +14,7 @@ type Handler struct {
 type Storer interface {
 	Wallets(walletType string) ([]Wallet, error)
 	CreateWallet(wallet Wallet) error
+	UpdateWallet(wallet Wallet) error
 	WalletByUserId(userId string) ([]Wallet, error)
 }
 
@@ -54,6 +55,18 @@ func (h *Handler) CreateWalletHandler(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
 	}
 	return c.JSON(http.StatusCreated, wallet)
+}
+
+func (h *Handler) UpdateWalletHandler(c echo.Context) error {
+	var wallet Wallet
+	if err := c.Bind(&wallet); err != nil {
+		return c.JSON(http.StatusBadRequest, Err{Message: err.Error()})
+	}
+
+	if err := h.store.UpdateWallet(wallet); err != nil {
+		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
+	}
+	return c.JSON(http.StatusOK, wallet)
 }
 
 // WalletByUserIdHandler

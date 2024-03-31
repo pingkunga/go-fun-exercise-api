@@ -24,6 +24,7 @@ func main() {
 	handler := wallet.New(p)
 	e.GET("/api/v1/wallets", handler.WalletHandler)
 	e.POST("/api/v1/wallets", handler.CreateWalletHandler)
+	e.PUT("/api/v1/wallets", handler.UpdateWalletHandler)
 	e.GET("/api/v1/users/:id/wallets", handler.WalletByUserIdHandler)
 	e.Logger.Fatal(e.Start(":1323"))
 }

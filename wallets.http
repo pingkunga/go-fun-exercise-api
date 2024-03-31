@@ -13,11 +13,24 @@ POST {{HostAddress}}/wallets
 Content-Type: application/json
 
 {
-    "user_id": 1,
+    "user_id": 99,
     "user_name": "PingkungA",
     "wallet_name": "PingkungA Wallet",
     "wallet_type": "Savings",
     "balance": 1000
+}
+
+### Update Wallet
+PUT {{HostAddress}}/wallets
+Content-Type: application/json
+
+{
+    "id": 7,
+    "user_id": 99,
+    "user_name": "PingkungA Updated",
+    "wallet_name": "PingkungA Wallet",
+    "wallet_type": "Savings",
+    "balance": 1500
 }
 
 ### Get Wallets by User ID

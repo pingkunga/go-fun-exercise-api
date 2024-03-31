@@ -66,6 +66,16 @@ func (p *Postgres) CreateWallet(wallet wallet.Wallet) error {
 	return nil
 }
 
+func (p *Postgres) UpdateWallet(wallet wallet.Wallet) error {
+	_, err := p.Db.Exec("UPDATE user_wallet SET user_id = $1, user_name = $2, wallet_name = $3, wallet_type = $4, balance = $5 WHERE id = $6",
+		wallet.UserID, wallet.UserName, wallet.WalletName, wallet.WalletType, wallet.Balance, wallet.ID,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *Postgres) WalletByUserId(userId string) ([]wallet.Wallet, error) {
 	rows, err := p.Db.Query("SELECT * FROM user_wallet WHERE user_id = $1", userId)
 	if err != nil {
