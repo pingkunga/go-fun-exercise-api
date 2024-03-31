@@ -98,6 +98,9 @@ This challenge is to replace the hardcode of the connection string in the code w
 #### Expectation
 ```
 No hardcode of the connection string in the code
+
+$env:DB_CONN="host=localhost port=5432 user=root password=password dbname=wallet sslmode=disable"
+
 ```
 
 
