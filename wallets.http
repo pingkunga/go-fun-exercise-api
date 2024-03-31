@@ -8,6 +8,17 @@ GET {{HostAddress}}/wallets
 ### Get Wallet Query Param (wallet_type)
 GET {{HostAddress}}/wallets?wallet_type=Savings
 
+### Create Wallet
+POST {{HostAddress}}/wallets
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "user_name": "PingkungA",
+    "wallet_name": "PingkungA Wallet",
+    "wallet_type": "Savings",
+    "balance": 1000
+}
 
 ### Get Wallets by User ID
 GET {{HostAddress}}/users/1/wallets
