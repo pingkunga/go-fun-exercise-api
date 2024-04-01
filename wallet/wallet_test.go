@@ -3,14 +3,17 @@ package wallet
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/labstack/echo/v4"
 )
 
+// Test handler.go
 func TestGetWallet(t *testing.T) {
 	t.Run("given unable to get wallets should return 500 and error message", func(t *testing.T) {
 		e := echo.New()
@@ -111,12 +114,15 @@ func TestCreateWallet(t *testing.T) {
 
 	t.Run("given user able to create wallet should return wallet created", func(t *testing.T) {
 		e := echo.New()
-		req := httptest.NewRequest(http.MethodPost, "/api/v1/wallets", nil)
+
+		//https://stackoverflow.com/questions/76197311/unit-test-for-post-request-is-not-working-in-go
+		req := httptest.NewRequest(http.MethodPost, "/api/v1/wallets", io.NopCloser(strings.NewReader(`{"user_id": 1, "user_name": "pingkunga", "wallet_name": "pingkunga_wallet", "wallet_type": "Savings", "Balance": 99999}`)))
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		//ResponseWriter interface and records all the responses from the handler:
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 
 		expected := Wallet{
-			ID:         1,
 			UserID:     1,
 			UserName:   "pingkunga",
 			WalletName: "pingkunga_wallet",
@@ -173,14 +179,16 @@ func TestUpdateWallet(t *testing.T) {
 
 	t.Run("given user able to update wallet should return wallet updated", func(t *testing.T) {
 		e := echo.New()
-		req := httptest.NewRequest(http.MethodPut, "/api/v1/wallets", nil)
+		req := httptest.NewRequest(http.MethodPut, "/api/v1/wallets", io.NopCloser(strings.NewReader(`{"user_id": 1, "user_name": "pingkunga_updated", "wallet_name": "pingkunga_wallet", "wallet_type": "Savings", "Balance": 99999}`)))
+		//req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		req.Header.Add("Content-Type", "application/json")
+
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 
 		expected := Wallet{
-			ID:         1,
 			UserID:     1,
-			UserName:   "pingkunga",
+			UserName:   "pingkunga_updated",
 			WalletName: "pingkunga_wallet",
 			WalletType: "Savings",
 			Balance:    99999,
@@ -249,13 +257,8 @@ func TestDeleteWalletByUserId(t *testing.T) {
 
 		//Check if the response is 200
 		actualBody := rec.Body.String()
-		if rec.Code != http.StatusOK {
-			t.Errorf("expected 200, got %d and %s", rec.Code, actualBody)
-		}
-
-		//Check if the response is the same as the expected
-		if rec.Body.String() != "wallet deleted" {
-			t.Errorf("expected wallet deleted, got %s", rec.Body.String())
+		if rec.Code != http.StatusNoContent {
+			t.Errorf("expected 204, got %d and %s", rec.Code, actualBody)
 		}
 	})
 
