@@ -1,5 +1,9 @@
 @HostAddress = http://localhost:1323/api/v1
 
+#for test with container
+#cmd docker run -p 10170:1323 -e DB_CONN="host=<Your_IP> port=5432 user=root password=password dbname=wallet sslmode=disable" wallerservice:1.0.0
+
+#@HostAddress = http://localhost:10170/api/v1
 
 ### Get Wallets
 GET {{HostAddress}}/wallets

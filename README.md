@@ -217,7 +217,15 @@ This challenge is to create a Dockerfile for the `Go` application and make sure 
 1. Create a Dockerfile for the Go application
 2. Using multi-stage Dockerfile
 3. The image size should be optimized
+
+docker build  -t wallerservice:1.0.0 .
+
 4. The image should be able to run the application (docker run)
+
+docker run -p 10170:1323 -e DB_CONN="host=192.168.1.104 port=5432 user=root password=password dbname=wallet sslmode=disable" wallerservice:1.0.0
+
+
+
 ```
 
 ### Challenge 9: DevOps - Design a CI for running static code analysis and tests
