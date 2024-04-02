@@ -29,15 +29,15 @@ type Err struct {
 
 // WalletHandler
 //
-//		@Summary		Get all wallets
-//		@Description	Get all wallets
-//		@Tags			wallet
-//	    @Param			wallet_type	query	string	false	"wallet type" Enums(Savings, Credit Card, Crypto Wallet)
-//		@Accept			json
-//		@Produce		json
-//		@Success		200	{object}	Wallet
-//		@Router			/api/v1/wallets [get]
-//		@Failure		500	{object}	Err
+//	@Summary		Get all wallets
+//	@Description	Get all wallets
+//	@Tags			wallet
+//	@Param			wallet_type	query	string	false	"wallet type" Enums(Savings, Credit Card, Crypto Wallet)
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	Wallet
+//	@Router			/api/v1/wallets [get]
+//	@Failure		500	{object}	Err
 func (h *Handler) WalletHandler(c echo.Context) error {
 	walletType := c.QueryParam("wallet_type")
 	wallets, err := h.store.Wallets(walletType)
@@ -99,13 +99,11 @@ func (h *Handler) UpdateWalletHandler(c echo.Context) error {
 //	@Summary		Delete wallet by user id
 //	@Description	Delete wallet by user id
 //	@Tags			user
-//	@Accept			json
 //	@Produce		json
 //	@Param			id	path	string	true	"user id"
 //	@Success		204	{object}	Err
-//  @Failure		500	{object}	Err
-//  @Router			/api/v1/users/:id/wallets [delete]
-
+//	@Failure		500	{object}	Err
+//	@Router			/api/v1/users/{id}/wallets [delete]
 func (h *Handler) DeleteWalletByUserIdHandler(c echo.Context) error {
 	id := c.Param("id")
 	if err := h.store.DeleteWalletByUserId(id); err != nil {
@@ -118,14 +116,12 @@ func (h *Handler) DeleteWalletByUserIdHandler(c echo.Context) error {
 //
 //	@Summary		Get wallet by user id
 //	@Description	Get wallet by user id
-//	@Tags			wallet
-//	@Accept			json
+//	@Tags			user
 //	@Produce		json
 //	@Param			id	path	string	true	"user id"
 //	@Success		200	{object}	Wallet
 //	@Failure		500	{object}	Err
-//	@Router			/api/v1/users/:id/wallets [get]
-
+//	@Router			/api/v1/users/{id}/wallets [get]
 func (h *Handler) WalletByUserIdHandler(c echo.Context) error {
 	id := c.Param("id")
 	wallet, err := h.store.WalletByUserId(id)
