@@ -30,7 +30,7 @@ jobs:
               run: go vet ./... 
             - name: Integration tests via docker-compose
               run: |-
-                docker-compose -f docker-compose-integration-test.yaml down
+                docker compose -f docker-compose-integration-test.yaml down
                 docker compose -f docker-compose-integration-test.yaml up --build --abort-on-container-exit --exit-code-from walletapi_tests
     pack_container:
       needs: check_quality
