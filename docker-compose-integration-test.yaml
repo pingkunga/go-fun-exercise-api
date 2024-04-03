@@ -1,0 +1,52 @@
+
+version: '3'
+
+networks:
+  integration-test:
+    driver: bridge
+
+services:
+    walletapi_tests:
+        build:
+          context: .
+          dockerfile: ./Dockerfile.test
+        volumes:
+            - .:/go/src/target
+        depends_on:
+            - walletapi
+        networks:
+            - integration-test
+        env_file:
+            - ./test.env
+    walletapi:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "1323:1323"
+        volumes:
+            - .:/app
+        depends_on:
+            db:
+                condition: service_healthy
+        env_file:
+            - ./test.env
+        networks:
+            - integration-test
+    db:
+        image: postgres:16.0
+        environment:
+            POSTGRES_DB: wallet
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: password
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        ports:
+            - "5432:5432"
+        networks:
+            - integration-test
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready"]
+
+# volumes:
+#     pgdata:
