@@ -41,4 +41,4 @@ Content-Type: application/json
 DELETE {{HostAddress}}/users/99/wallets
 
 ### Get Wallets by User ID
-GET {{HostAddress}}/users/1/wallets
+GET {{HostAddress}}/users/99/wallets

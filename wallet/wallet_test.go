@@ -123,6 +123,7 @@ func TestCreateWallet(t *testing.T) {
 		c := e.NewContext(req, rec)
 
 		expected := Wallet{
+			ID:         1,
 			UserID:     1,
 			UserName:   "pingkunga",
 			WalletName: "pingkunga_wallet",
@@ -179,7 +180,7 @@ func TestUpdateWallet(t *testing.T) {
 
 	t.Run("given user able to update wallet should return wallet updated", func(t *testing.T) {
 		e := echo.New()
-		req := httptest.NewRequest(http.MethodPut, "/api/v1/wallets", io.NopCloser(strings.NewReader(`{"user_id": 1, "user_name": "pingkunga_updated", "wallet_name": "pingkunga_wallet", "wallet_type": "Savings", "Balance": 99999}`)))
+		req := httptest.NewRequest(http.MethodPut, "/api/v1/wallets", io.NopCloser(strings.NewReader(`{"ID":1, "user_id": 1, "user_name": "pingkunga_updated", "wallet_name": "pingkunga_wallet", "wallet_type": "Savings", "Balance": 99999}`)))
 		//req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		req.Header.Add("Content-Type", "application/json")
 
@@ -187,6 +188,7 @@ func TestUpdateWallet(t *testing.T) {
 		c := e.NewContext(req, rec)
 
 		expected := Wallet{
+			ID:         1,
 			UserID:     1,
 			UserName:   "pingkunga_updated",
 			WalletName: "pingkunga_wallet",
@@ -355,8 +357,8 @@ func (s StubWallet) Wallets(walletType string) ([]Wallet, error) {
 	return s.wallet, s.err
 }
 
-func (s StubWallet) CreateWallet(wallet Wallet) error {
-	return s.err
+func (s StubWallet) CreateWallet(wallet Wallet) (int, error) {
+	return 1, s.err
 }
 
 func (s StubWallet) UpdateWallet(wallet Wallet) error {

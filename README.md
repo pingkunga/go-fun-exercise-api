@@ -250,3 +250,18 @@ This challenge is to design a CI `(Github Action)` for running static code analy
 3. All tasks on the CI should be passed
 4. Feel free to add more tasks - e.g. build the Docker image
 ```
+
+
+#### Integrate Test 
+
+- run test 
+```
+docker compose -f docker-compose-integration-test.yaml up --build --abort-on-container-exit --exit-code-from walletapi_tests
+docker-compose -f docker-compose-integration-test.yaml down
+```
+
+- coverage 
+```
+go test -v ./... -cover -coverprofile="c.out"
+go tool cover -html="c.out" -o "coverage.html"
+```

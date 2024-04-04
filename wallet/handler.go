@@ -13,7 +13,8 @@ type Handler struct {
 // for implement interface in wallet.go
 type Storer interface {
 	Wallets(walletType string) ([]Wallet, error)
-	CreateWallet(wallet Wallet) error
+	//CreateWallet(wallet Wallet) error
+	CreateWallet(wallet Wallet) (int, error)
 	UpdateWallet(wallet Wallet) error
 	DeleteWalletByUserId(userId string) error
 	WalletByUserId(userId string) ([]Wallet, error)
@@ -64,9 +65,12 @@ func (h *Handler) CreateWalletHandler(c echo.Context) error {
 	if err := c.Bind(&wallet); err != nil {
 		return c.JSON(http.StatusBadRequest, Err{Message: err.Error()})
 	}
-	if err := h.store.CreateWallet(wallet); err != nil {
+	id, err := h.store.CreateWallet(wallet)
+
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: err.Error()})
 	}
+	wallet.ID = id
 	return c.JSON(http.StatusCreated, wallet)
 }
 
