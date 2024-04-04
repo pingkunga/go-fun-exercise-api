@@ -265,3 +265,15 @@ docker-compose -f docker-compose-integration-test.yaml down
 go test -v ./... -cover -coverprofile="c.out"
 go tool cover -html="c.out" -o "coverage.html"
 ```
+```
+  - name: Run tests
+    run:|-
+	   go test -v ./... -cover -coverprofile="c.out"
+	   go tool cover -html="c.out" -o "coverage.html"
+
+    - name: Upload coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: coverage.html
+```
